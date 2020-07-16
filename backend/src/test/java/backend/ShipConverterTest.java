@@ -70,7 +70,7 @@ public class ShipConverterTest {
 					() -> assertEquals(container.getWeight(), containerDTO.getWeight(), "Container.weight is not equal"),
 					() -> assertEquals(container.getVolume(), containerDTO.getVolume(), "Container.volume is not equal"),
 					() -> assertEquals(container.getShip().getId(), containerDTO.getShipID(), "Container.shipId is not equal"),
-					() -> assertEquals(container.getClass().getSimpleName().toLowerCase().replaceAll("container", ""), containerDTO.getType().toString().toLowerCase(), "Container.id is not equal")
+					() -> assertEquals(container.getClass().getSimpleName().toLowerCase().replaceAll("container", ""), containerDTO.getType().toString().toLowerCase(), "Container.type is not equal")
 					);
 		}));
 	}
