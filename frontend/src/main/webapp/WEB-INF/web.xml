@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         id="WebApp_ID" version="3.1">
+  <display-name>MyApplication</display-name>
+  <context-param>
+    <description>Vaadin production mode</description>
+    <param-name>productionMode</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <servlet>
+    <servlet-name>My Vaadin App</servlet-name>
+    <servlet-class>com.vaadin.cdi.server.VaadinCDIServlet</servlet-class>
+    <init-param>
+      <description>Vaadin UI</description>
+      <param-name>UI</param-name>
+      <param-value>com.cargopartner.education.pn14005.frontend.ui.MyUI</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>My Vaadin App</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+</web-app>

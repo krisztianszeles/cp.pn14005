@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+	http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="spot_db" transaction-type="JTA">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>test_db</jta-data-source>
+        <properties>
+            <property name="hibernate.default_schema" value="test_schema"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" /> <!-- DB Dialect -->
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+            
+            <property name="hibernate.show_sql" value="false" /> <!-- Show SQL in console -->
+            <property name="hibernate.format_sql" value="false" /> <!-- Show SQL formatted -->
+            <property name="org.hibernate.flushMode" value="COMMIT"/>
+            
+        </properties>
+    </persistence-unit>
+</persistence>
