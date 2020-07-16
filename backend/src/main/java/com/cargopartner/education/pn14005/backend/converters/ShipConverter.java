@@ -1,24 +1,22 @@
-package com.cargopartner.education.pn14005.backend.entity;
+package com.cargopartner.education.pn14005.backend.converters;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-import com.cargopartner.education.pn14005.backend.visitors.ContainerNameVisitor;
+import com.cargopartner.education.pn14005.backend.entity.Container;
+import com.cargopartner.education.pn14005.backend.entity.RefrigeratorContainer;
+import com.cargopartner.education.pn14005.backend.entity.Ship;
+import com.cargopartner.education.pn14005.backend.entity.StandardContainer;
 import com.cargopartner.education.pn14005.backend.visitors.ContainerTypeVisitor;
 import com.cargopartner.education.pn14005.core.dto.ContainerDTO;
 import com.cargopartner.education.pn14005.core.dto.ContainerType;
 import com.cargopartner.education.pn14005.core.dto.ShipDTO;
 import com.cargopartner.education.pn14005.core.dto.ShipIndexDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ShipConverter {
 
@@ -89,27 +87,6 @@ public class ShipConverter {
 		ship.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
 		return toShip(shipDTO, ship);
 	}
-
-	public String objectToJSON(Object object) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.writeValueAsString(object);
-		} catch (IOException e) {
-			LOGGER.error("Error converting to JSON", e);
-		}
-		return null;
-	}	
-	
-	public <T> T getObjectFromJson(String json, Class<T> clazz) {
-		try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(json, clazz);
-        } catch (IOException e) {
-            LOGGER.error("Error converting to/from JSON", e);
-        }
-        return null;
-	}
-
 
 	private Container toContainer(ContainerDTO containerDTO, Container container) { 
 		container.setName(containerDTO.getName());

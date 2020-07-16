@@ -12,10 +12,11 @@ import javax.inject.Inject;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import com.cargopartner.education.pn14005.backend.converters.JsonConverter;
+import com.cargopartner.education.pn14005.backend.converters.ShipConverter;
 import com.cargopartner.education.pn14005.backend.elasticsearch.ElasticSearchClient;
 import com.cargopartner.education.pn14005.backend.elasticsearch.ShipElasticSearch;
 import com.cargopartner.education.pn14005.backend.entity.Ship;
-import com.cargopartner.education.pn14005.backend.entity.ShipConverter;
 import com.cargopartner.education.pn14005.backend.events.DataActionType;
 import com.cargopartner.education.pn14005.backend.events.DataUpdatedEvent;
 import com.cargopartner.education.pn14005.core.dto.ShipDTO;
@@ -29,6 +30,9 @@ public class ShipService {
 
 	@Inject
 	private ShipConverter shipConverter;
+	
+	@Inject
+	private JsonConverter jsonConverter;
 
 	@Inject
 	private ShipElasticSearch shipElasticSearch;	
@@ -44,7 +48,7 @@ public class ShipService {
 	public ShipDTO createShip(ShipDTO shipDTO) {    
 		Ship ship = shipDAO.createShip(shipConverter.toShip(shipDTO));		
 		ShipIndexDTO shipIndexDTO = shipConverter.toShipIndexDTO(ship);
-		dataUpdatedEvent.fire(new DataUpdatedEvent(DataActionType.CREATE, ship.getId(), shipConverter.objectToJSON(shipIndexDTO)));
+		dataUpdatedEvent.fire(new DataUpdatedEvent(DataActionType.CREATE, ship.getId(), jsonConverter.objectToJSON(shipIndexDTO)));
 		return shipIndexDTO;
 	}
 	public ShipDTO getShip(Long shipId) { 
@@ -57,7 +61,7 @@ public class ShipService {
 		}
 		shipConverter.toShip(shipDTO, ship);  
 		ShipIndexDTO shipIndexDTO  = shipConverter.toShipIndexDTO(ship);
-		dataUpdatedEvent.fire(new DataUpdatedEvent(DataActionType.UPDATE, ship.getId(), shipConverter.objectToJSON(shipIndexDTO)));
+		dataUpdatedEvent.fire(new DataUpdatedEvent(DataActionType.UPDATE, ship.getId(), jsonConverter.objectToJSON(shipIndexDTO)));
 		return shipIndexDTO;    		    	
 	}       
 	public Long deleteShip(Long shipId) {
@@ -79,7 +83,7 @@ public class ShipService {
 		return ships.stream()
 				.map(ship -> shipConverter.toShipIndexDTO(ship))
 				.map(shipIndexDTO -> {
-					dataUpdatedEvent.fire(new DataUpdatedEvent(DataActionType.CREATE, shipIndexDTO.getId(), shipConverter.objectToJSON(shipIndexDTO)));
+					dataUpdatedEvent.fire(new DataUpdatedEvent(DataActionType.CREATE, shipIndexDTO.getId(), jsonConverter.objectToJSON(shipIndexDTO)));
 					return shipIndexDTO;
 				}).collect(Collectors.toSet());
 	}
@@ -89,7 +93,7 @@ public class ShipService {
 		shipElasticSearch
 			.getDocumentsByQuery(elasticSearchClient.getClient(), ELASTIC_INDEX, QueryBuilders.matchAllQuery())
 			.getHits()
-			.forEach(hit -> set.add(shipConverter.getObjectFromJson(hit.getSourceAsString(), ShipIndexDTO.class)));
+			.forEach(hit -> set.add(jsonConverter.getObjectFromJson(hit.getSourceAsString(), ShipIndexDTO.class)));
 		return set;
 	}
 	
